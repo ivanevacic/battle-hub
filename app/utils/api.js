@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const id = "e2afcd72dd653468f3c2";
 const sec = "220a264547738ce549011f925b2b11fb2bf45945";
@@ -42,15 +42,14 @@ function sortPlayers (players) {
   return players.sort( (a,b) => b.score - a.score);
 }
 
-module.exports = {
-  battle (players) {
-    return axios.all(players.map(getUserData))
+export function battle (players) {
+  return axios.all(players.map(getUserData))
       .then(sortPlayers)
       .catch(handleError);
-  },
-  fetchPopularRepos (language) {
-    const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`);
+}
 
-    return axios.get(encodedURI).then( ({data}) => data.items);
-  }
-};
+export function fetchPopularRepos (language) {
+  const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`);
+
+  return axios.get(encodedURI).then( ({data}) => data.items);
+}
