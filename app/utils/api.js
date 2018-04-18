@@ -4,9 +4,9 @@ const id = "e2afcd72dd653468f3c2";
 const sec = "220a264547738ce549011f925b2b11fb2bf45945";
 const params = `?client_id=${id}&client_secret=${sec}`;
 
-function getProfile (username) {
-  return axios.get(`https://api.github.com/users/${username}${params}`)
-    .then( ({data}) => data );//  (user) => user.data 
+async function getProfile (username) {
+  const profile = await axios.get(`https://api.github.com/users/${username}${params}`);
+  return profile.data 
 }
 
 function getRepos (username) {
@@ -28,28 +28,34 @@ function handleError (error) {
   return null;
 }
 
-function getUserData (player) {
-  return Promise.all([  //  added babel-polyfill(here and in webpack) to use Promise
+async function getUserData (player) {
+  const [ profile, repos ] = await Promise.all([//  added babel-polyfill(here and in webpack) to use Promise
     getProfile(player),
     getRepos(player)
-  ]).then( ([profile, repos]) => ({  //  (data) => var profile,repos = data[0],[1]
-      profile,//  profile: profile,
-      score: calculateScore(profile, repos)
-  }));
+  ])
+
+  return {
+    profile,
+    score: calculateScore(profile, repos)
+  }
 }
 
 function sortPlayers (players) {
   return players.sort( (a,b) => b.score - a.score);
 }
 
-export function battle (players) {
-  return axios.all(players.map(getUserData))
-      .then(sortPlayers)
-      .catch(handleError);
+export async function battle (players) {
+  const results = await Promise.all(players.map(getUserData))
+    .catch(handleError);
+  return results === null
+    ? results
+    : sortPlayers(results);
 }
 
-export function fetchPopularRepos (language) {
+export async function fetchPopularRepos (language) {
   const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`);
+  const repos = await axios.get(encodedURI)
+    .catch(handleError);
 
-  return axios.get(encodedURI).then( ({data}) => data.items);
+  return repos.data.items;
 }
