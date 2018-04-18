@@ -1,7 +1,7 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const api = require('../utils/api');
-const Loading = require('./Loading');
+import React from 'react';
+import PropTypes from 'prop-types';
+import api from '../utils/api';
+import Loading from './Loading';
 
 function SelectLanguage ({ selectedLanguage, onSelect }) {
   const languages = ['All', 'JavaScript', 'Swift', 'Python', 'Java', 'C++'];
@@ -87,4 +87,4 @@ class Popular extends React.Component {
   }
 }
 
-module.exports = Popular;
+export default Popular;
