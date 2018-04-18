@@ -15,7 +15,8 @@
     "presets": [
       "env",
       "react"
-    ]
+    ],
+    "plugins": ["transform-class-properites"]
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
