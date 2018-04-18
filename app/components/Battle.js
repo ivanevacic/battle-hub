@@ -14,7 +14,9 @@ class PlayerInput extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(event) {
-    this.setState( () => ({ username: event.target.value}))
+    const value = event.target.value;
+    
+    this.setState( () => ({ username: value}));
   }
   handleSubmit(event) {
     event.preventDefault();
