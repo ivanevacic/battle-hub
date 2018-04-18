@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import api from '../utils/api';
+import { fetchPopularRepos } from '../utils/api';
 import Loading from './Loading';
 
 function SelectLanguage ({ selectedLanguage, onSelect }) {
@@ -68,7 +68,7 @@ class Popular extends React.Component {
   updateLanguage(lang) {
     this.setState( () => ({ selectedLanguage: lang, repos: null }));
 
-    api.fetchPopularRepos(lang)
+    fetchPopularRepos(lang)
       .then( (repos) =>  this.setState( () =>  { repos }));
   }
   render() {
