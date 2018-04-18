@@ -39,7 +39,7 @@ class PlayerInput extends React.Component {
         <label className='header' htmlFor='username'>{label}</label>
         <input
           id='username'
-          placeholder='github username'
+          placeholder='Type github username'
           type='text'
           value={username}
           autoComplete='off'
